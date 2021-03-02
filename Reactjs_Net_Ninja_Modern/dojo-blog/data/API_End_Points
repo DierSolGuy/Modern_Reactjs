@@ -1,0 +1,7 @@
+Resources
+  http://localhost:8000/blogs
+
+Home
+  http://localhost:8000
+
+  Running a json Server: "npx json-server --watch data/db.json --port 8000"

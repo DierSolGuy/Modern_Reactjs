@@ -40,19 +40,30 @@ const Home = () => {
 
     useEffect( () => { // we cannot make useEffect async
         fetch('http://localhost:8000/blogs') // Fetching API - GET Request
-            .then()
-            .catch();
+            .then( res => {
+                return res.json();
+            })
+            .then( data => {
+                console.log(data)
+                setBlogs(data)
+            })
 
     }, []);
 
     return ( 
         <div className="home">
             <h2>Home Page</h2>
-            
-            <BlogList blogs={blogs} title="All Blogs!" handleDelete={handleDelete} />
-            <BlogList blogs={blogs.filter((blog) =>blog.author === 'mario')} title="Mario's Blogs!" />
+            {/* Conditional Templating  by && */}
+           { blogs && <BlogList blogs={blogs} title="All Blogs!" handleDelete={handleDelete} /> }
+            { blogs && <BlogList blogs={blogs.filter((blog) =>blog.author === 'mario')} title="Mario's Blogs!" /> }
 
             <p>{ name } and Established on { age }</p>
             <button onClick = { handleClick }>Click Here</button>
             <button onClick = { (e) => handleClickAgain('Sourish', e) }>Click Me Again</button>
-            <button onClick = { () => setName('Luci') }>Chang
+            <button onClick = { () => setName('Luci') }>Change Name</button> 
+        </div>
+        
+     );
+}
+ 
+export default Home;

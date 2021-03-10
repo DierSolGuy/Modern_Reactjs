@@ -6,31 +6,29 @@
     1. Fetch Data
     2. Communicate with some Authentication */
 
-import { useState, useEffect } from 'react';
+
 import BlogList from './bloglist';
+import useFetch from './useFetch';
 
 
 
 const Home = () => {
 
-    const [name, setName] = useState('Mario');
-    const [age, setAge] = useState(2020);
-    // List of Blogs in JSON Format
-    const [blogs, setBlogs] = useState(null);
+    const { data, isPending, error } = useFetch('http://localhost:8000/blogs');
 
-    const handleClick = () => {
-        setName('Aeonix Research and Innovations');
-        setAge(2023);
-    };
+    // const handleClick = () => {
+    //     setName('Aeonix Research and Innovations');
+    //     setAge(2023);
+    // };
 
-    const handleClickAgain = (name, e) => {
-        console.log('Hello! '+name, e.target);
-    };
+    // const handleClickAgain = (name, e) => {
+    //     console.log('Hello! '+name, e.target);
+    // };
 
-    const handleDelete = (id) => {
-        const newBlogs = blogs.filter( blog => blog.id !== id);
-        setBlogs(newBlogs);
-    };
+    // const handleDelete = (id) => {
+    //     const newBlogs = blogs.filter( blog => blog.id !== id);
+    //     setBlogs(newBlogs);
+    // };
 
     // useEffect( () => {
     //     console.log('Use Effect run');
@@ -38,29 +36,22 @@ const Home = () => {
     //     console.log(name);
     // }, [name]);
 
-    useEffect( () => { // we cannot make useEffect async
-        fetch('http://localhost:8000/blogs') // Fetching API - GET Request
-            .then( res => {
-                return res.json();
-            })
-            .then( data => {
-                console.log(data)
-                setBlogs(data)
-            })
-
-    }, []);
-
     return ( 
         <div className="home">
             <h2>Home Page</h2>
-            {/* Conditional Templating  by && */}
-           { blogs && <BlogList blogs={blogs} title="All Blogs!" handleDelete={handleDelete} /> }
-            { blogs && <BlogList blogs={blogs.filter((blog) =>blog.author === 'mario')} title="Mario's Blogs!" /> }
+            {/* Conditional Templating and Rendering by && */}
+           {/* blogs && <BlogList blogs={blogs} title="All Blogs!" handleDelete={handleDelete} /> */}
 
-            <p>{ name } and Established on { age }</p>
+           { error && <div>{ error }</div>}
+           { isPending && <div> Loading... </div> }
+           { data && <BlogList blogs={data} title="All Blogs!" />}
+            { data && <BlogList blogs={data.filter((blog) =>blog.author === 'mario')} title="Mario's Blogs!" /> }
+            { data && <BlogList blogs={data.filter((blog) =>blog.author === 'yoshi')} title="Yoshi's Blogs!" /> }
+
+           {/* <p>{ name } and Established on { age }</p>
             <button onClick = { handleClick }>Click Here</button>
             <button onClick = { (e) => handleClickAgain('Sourish', e) }>Click Me Again</button>
-            <button onClick = { () => setName('Luci') }>Change Name</button> 
+            <button onClick = { () => setName('Luci') }>Change Name</button> */}
         </div>
         
      );

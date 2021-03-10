@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom'; // This Hook is use to redirect to different pages for the users.
+
 
 const Create = () => {
 
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [author, setAuthor] = useState('Yoshi');
+    const [isPending, setIsPending] = useState(false);
+    const history = useHistory(); // Invoking the Hook
 
     const handleSubmit = (e) => {
 
@@ -20,9 +24,12 @@ const Create = () => {
             body: JSON.stringify(blog)
             }) // Asynchronous Function
             .then( () => {
-                console.log('New Blog Added')
+                console.log('New Blog Added');
+                setIsPending(false);
+                //history.go(-1); // It will redirect the user to previous page.
+                history.push(`/`); // Redirecting to the home page route.
             })
-            .catch()
+            .catch( (e) => console.log(e))
     }
 
     return ( 
@@ -52,9 +59,10 @@ const Create = () => {
                     <option value="mario">Mario</option>
                     <option value="Yoshi">Yoshi</option>
                 </select>
-                <button> Add Blog </button>
-                <p>{title}</p>
-                <p>{body}</p>
+                { !isPending && <button> Add Blog </button> }
+                { isPending && <button disabled> Adding Blog... </button> }
+                { /*<p>{title}</p>
+                <p>{body}</p> */}
                 
             </form>
         </div>

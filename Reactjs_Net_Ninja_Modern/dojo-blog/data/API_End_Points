@@ -5,3 +5,5 @@ Home
   http://localhost:8000
 
   Running a json Server: "npx json-server --watch data/db.json --port 8000"
+
+  Installing React router: "npm install react-router-dom@5"

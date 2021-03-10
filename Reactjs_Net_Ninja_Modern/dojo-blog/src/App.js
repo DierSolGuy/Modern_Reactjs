@@ -1,21 +1,33 @@
-//Root Components
 import Navbar from './Navbar';
 import Home from './Home';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Create from './Create';
+import BlogDetails from './BlogDetails';
+import NotFound from './NotFound';
 
-// A component is a function
 function App() {
-    return (
-    // JSX template Code and in JSX camelCase is used.
-    // In JSX, class cannot be used as its a reserved keyword in Javascript.
-    // So we use className in camleCase format for JSX.
-    // In JSX templates, we can add dynamic values and variables. 
-    // In JSX, Boolean value and objects could not be shown on output, will give an error.
-    <div className="App">
-      <Navbar />
-      <div className="content">
-        <Home />
+  return (
+    <Router>
+      <div className="App">
+        <Navbar />
+        <div className="content">
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/create">
+              <Create />
+            </Route>
+            <Route path="/blogs/:id">
+              <BlogDetails />
+            </Route>
+            <Route path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
 
